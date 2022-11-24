@@ -321,7 +321,7 @@ void FemtoDstAnalyzer_New(const Char_t *inFile = "st_physics_12150008_raw_403000
           //flowEtaSub[iharm][mRunId.at(RunID)]->ProcessSecondTrackLoop(GetRapidity2(femtoTrack, parTPCandTOF),femtoTrack->eta(),femtoTrack->phi(),femtoTrack->pt(),parTPCandTOF,(Double_t)cent);
 
           flowSP[iharm][mRunId.at(RunID)]->ProcessSecondTrackLoop(femtoTrack->eta(),femtoTrack->eta(),femtoTrack->phi(),femtoTrack->pt(),parHadrons,(Double_t)cent);
-          flowSP[iharm][mRunId.at(RunID)]->ProcessSecondTrackLoop(femtoTrack->eta(),femtoTrack->phi(),femtoTrack->pt(),parTPCandTOF,(Double_t)cent);
+          flowSP[iharm][mRunId.at(RunID)]->ProcessSecondTrackLoop(femtoTrack->eta(),femtoTrack->eta(),femtoTrack->phi(),femtoTrack->pt(),parTPCandTOF,(Double_t)cent);
           //flowSP[iharm][mRunId.at(RunID)]->ProcessSecondTrackLoop(GetRapidity2(femtoTrack, parTPCandTOF),femtoTrack->eta(),femtoTrack->phi(),femtoTrack->pt(),parTPCandTOF,(Double_t)cent);
 
         }
