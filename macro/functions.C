@@ -5,45 +5,6 @@ Int_t GetEtaDirection(StFemtoTrack *const &track){
   return -1;
 }
 
-Int_t GetBinVtxZ(StFemtoEvent *const &event, const Int_t _energy){
-  
-  TVector3 pVtx = event->primaryVertex();
-
-  if(pVtx.Z() == (-1.0 * CutVtxZ.at(_energy))) return 0;
-  if(pVtx.Z() == CutVtxZ.at(_energy)) return (nBinVtxZ_PID-1);
-
-  Int_t bin = -1;
-
-  bin = (Int_t)( TMath::Abs(CutVtxZ.at(_energy) + pVtx.Z()) / (2.0*CutVtxZ.at(_energy) / nBinVtxZ_PID));
-  
-  //std::cout << bin <<"\t\t" << pVtx.Z()<<std::endl;
-
-  if(bin > nBinVtxZ_PID)return -1;
-
-  return bin;
-
-}
-
-
-Int_t GetBinVtxZHadrons(StFemtoEvent *const &event, const Int_t _energy){
-  
-  TVector3 pVtx = event->primaryVertex();
-
-  if(pVtx.Z() == (-1.0 * CutVtxZ.at(_energy))) return 0;
-  if(pVtx.Z() == CutVtxZ.at(_energy)) return (nBinVtxZ_Hadrons-1);
-
-  Int_t bin = -1;
-
-  bin = (Int_t)( TMath::Abs(CutVtxZ.at(_energy) + pVtx.Z()) / (2.0*CutVtxZ.at(_energy) / nBinVtxZ_Hadrons));
-  
-  //std::cout << bin <<"\t\t" << pVtx.Z()<<std::endl;
-
-  if(bin > nBinVtxZ_Hadrons)return -1;
-
-  return bin;
-
-}
-
 Float_t GetMass(Int_t particle){
   if(particle==0){
     return pion_mass;
