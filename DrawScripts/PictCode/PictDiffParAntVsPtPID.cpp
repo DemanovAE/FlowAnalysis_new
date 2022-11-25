@@ -29,7 +29,7 @@
 //#include "../macro/ConstantsNew.h"
 
 #if ROOT_VERSION_CODE >= ROOT_VERSION(6,0,0)
-R__LOAD_LIBRARY(libDrawPicture.so)
+R__LOAD_LIBRARY(../build/libDrawPicture.so)
 #endif
 
 void PictDiffParAntVsPtPID(const Char_t *inFileName,const Int_t energy = 28){
