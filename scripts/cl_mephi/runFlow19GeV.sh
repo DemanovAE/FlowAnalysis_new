@@ -13,7 +13,7 @@ WORK_MODE=$2
 export ENERGY=19
 export MAIN_DIR=/mnt/pool/rhic/1/demanov/cherenkov/NewSTAR/BES/
 export INPUT=$MAIN_DIR/lists/lists${ENERGY}GeV/StRuns${SLURM_ARRAY_TASK_ID}.list
-export OUTPUT=$MAIN_DIR/OUT_new/${ENERGY}GeV/${ENERGY}GeV_${WORK_MODE}_${SLURM_ARRAY_JOB_ID}_${PID_TYPE}
+export OUTPUT=$MAIN_DIR/OUT_new/${ENERGY}GeV/${ENERGY}GeV_${WORK_MODE}_${PID_TYPE}_${SLURM_ARRAY_JOB_ID}
 
 source /mnt/pool/rhic/4/parfenovpeter/Soft/Basov/ROOT/build/bin/thisroot.sh
 

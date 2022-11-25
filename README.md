@@ -1,6 +1,6 @@
 # v2,v3 (STAR BES)
 
-Данный код позволяет измерить эллиптический и треугольный потоки в столкновениях ядер золота при энергиях BES STAR, используя метод плоскости события.
+Данный код позволяет измерить эллиптический и треугольный потоки в столкновениях ядер золота при энергиях BES STAR, используя метод плоскости события, SP.
 
 ## Содержание:
 
@@ -10,22 +10,25 @@ III. [Обработка событий](#EventProcessing) \
 III. [Анализ результатов](#Result) \
 
 ## I. Устновка <a name="Устновка"></a>
-
-На кластере NICA
+Требования:
+CMake (ver. 3.1 or higher)
+ROOT (should work with versions 5 and 6)
+ROOT's MathMore library
 
 ```bash
-cd /scratch2/${USER}
 mkdir STAR
 cd STAR
-git clone https://github.com/DemanovAE/BES.git
-cd BES
+git clone https://github.com/DemanovAE/FlowAnalysis_new.git
+cd FlowAnalysis_new
 ```
 
 Не забудьте добавить библиотеки ROOT в свою среду, используя thisroot.sh
-В терминале кластера NICA:
+В терминале:
 
 ```sh
 source /opt/fairsoft/bmn/may18p1/bin/thisroot.sh
+#or
+source /mnt/pool/rhic/4/parfenovpeter/Soft/Basov/ROOT/build/bin/thisroot.sh
 ```
 
 Компилирование читалки данных:
@@ -37,7 +40,7 @@ make
 ```
 Измените пути в `set_env.sh`: изменить `ST_FEMTO_DST_INC_DIR` на стандартный. Это каталог, в котором хранится `libStFemtoDst.so`.
 
-Установка проекта с помощью CMake. (находясь в директории ./BES)
+Установка проекта с помощью CMake. (находясь в директории ./macro)
 
 ```bash
 cd ../
@@ -63,43 +66,58 @@ make
 
 Интерактивный режим:
 ```bash
-./FemtoDstAnalyzer_PID -i inFile -o outFile -m WorkMode -g Energy
+./FemtoDstAnalyzer_PID -i inFile -o outFile -r inRec -f inFlat -m WorkMode -g Energy
 ```
 1. `inFile` - root файл или лист с файлами
 2. `outFile` - выходной файл. Для измерения потоков нужно провести 3 прогонки данных. Выходной файл после 1 прогонки `NoRe_27GeV.root`, после второй - `Re_27GeV.root` и конечный файл `Flow_27GeV.root`.
-3. `WorkMode` - указывает стадию анализа.
+3. `inRec` -
+4. `inFlat` -
+5. `WorkMode` - указывает стадию анализа.
 
         | WorkMode        | Описание    |
         | --------------- | ----------- |
-        | QA              | в разработке                                                                                                                        |
+                                                                                                                            |
         | raw             | Первая прогонка данных. На данном этапе набираются данные для корекции Q-векторов, а именно дял процедуры реценренинга              |
         | rec             | Вторая прогонка данных. На данном этапе набираются данные для корекции угла плоскости события, а именно дял процедуры флатенинга    |
-        | flow            | Третья прогонка данных. На данном этапе измеряются v2, v3, и расрешение.                                                            |
+        | flow            | Третья прогонка данных. На данном этапе измеряются v2, v3,... и расрешение.                                                            |
 
-4. `Energy` - энергия анализируемых данных.
+6. `Energy` - энергия анализируемых данных.
 
 Пример запуска:
 ```bash
-./FemtoDstAnalyzer_PID -i ../lists/lists27GeV/StRun15.list -o ./NoRe_27GeV.root -m raw -g 27
+./FemtoDstAnalyzer_PID -i ../lists/lists27GeV/StRun15.list -o ./raw_27GeV.root -r null -f null -m raw -g 27
+./FemtoDstAnalyzer_PID -i ../lists/lists27GeV/StRun15.list -o ./rec_27GeV.root -r raw_27GeV.root -f null -m raw -g 27
+./FemtoDstAnalyzer_PID -i ../lists/lists27GeV/StRun15.list -o ./flow_27GeV.root -r raw_27GeV.root -f rec_27GeV.root -m raw -g 27
 ```
 
-Для отправки задач на класстер NICA используются следующий bash скрипт - `/scripts/start_pid_nica.sh INPUT_FILELIST_DIR INPUT_WORKMODE INPUT_ENERGY`
+Для отправки задач на класстер используются следующий bash скрипт - `/scripts/cl_mephi/start_pid_nica.sh INPUT_FILELIST_DIR INPUT_WORKMODE INPUT_ENERGY`
 ```sh
-cd ../scripts
+cd ../scripts/cl_mephi
 . start_pid_nica.sh /scratch2/$USER/STAR/BES/lists/lists27GeV raw 27
 ```
 
 После каждого прогона данных необходимо объединить все выходные файлы при помощи hadd
 ```bash
-hadd -j 4 ../OUT/27GeV/${WorkMode}_${Energy}GeV_PID.root ../OUT/27GeV/${WorkMode}_27GeV_PID_${data_time}/root/StRun*.root
-```
-
-На этапе измернеия потоков (`flow`) для идентификации частиц должен присутвтвовать файл с фитами. Для этого надо:
-```bash
-cd ../scripts
-. start_pid_combPID.sh /scratch2/demanov/STAR/BES/lists/lists27GeV/ first 27
-hadd -j 4 ../OUT/27GeV/Histo_27GeVRun10.root ../OUT/27GeV/first_27GeV_PID_${data_time}/root/StRun*.root
-root -l -b -q ../macro/fitM2_PID.C'("../OUT/27GeV/Histo_27GeVRun10.root","test.root","../OUT/27GeV/FitFunM2_27GeVRun10.root",27,1)'
+hadd -j 4 ../OUT/27GeV/${WorkMode}_${Energy}GeV.root ../OUT/27GeV/${Energy}_${WorkMode}_*/root/StRun*.root
 ```
 
 ## IIII. Анализ результатов <a name="Result"></a>
+
+Объеденить RunId и удлаить BadRun
+```bash
+cd /DrawScripts
+root -l -b -q FirstScript.cpp"(\"inFileAfterHadd.root\",\"./OutFlowFile.root\","28")"
+
+```
+
+Перейти в директорию DrawScripts
+
+```bash
+cd DrawScripts
+mkdir build
+cd build
+cmake ../
+make
+cd ../PictCode
+root -l -b -q PictDiffParAntVsCent.cpp"(\"OutFlowFile.root\","Energy")
+```

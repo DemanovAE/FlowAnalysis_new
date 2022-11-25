@@ -3,6 +3,9 @@
 PID_TYPE=$1
 WORK_MODE=$2
 ENERGY=$3
+SYS=$4
+IN_REC=$5
+IN_FLAT=$6
 
 if [[ $ENERGY == "11" ]]; then
   sbatch runFlow11GeV.sh $PID_TYPE $WORK_MODE 
@@ -17,7 +20,7 @@ if [[ $ENERGY == "19" ]]; then
 fi
 
 if [[ $ENERGY == "27" ]]; then
-  sbatch runFlow27GeVRun10.sh $PID_TYPE $WORK_MODE 
+  sbatch runFlow27GeVRun10.sh $PID_TYPE $WORK_MODE $IN_REC $IN_FLAT $SYS
 fi
 
 if [[ $ENERGY == "39" ]]; then
@@ -29,9 +32,9 @@ if [[ $ENERGY == "62" ]]; then
 fi
 
 if [[ $ENERGY == "281" ]]; then
-  sbatch runFlow27GeVRun18Per1.sh $PID_TYPE $WORK_MODE 
+  sbatch runFlow28GeVPer1.sh $PID_TYPE $WORK_MODE $IN_REC $IN_FLAT $SYS
 fi
 
 if [[ $ENERGY == "282" ]]; then
-  sbatch runFlow27GeVRun18Per2.sh $PID_TYPE $WORK_MODE 
+  sbatch runFlow28GeVPer2.sh $PID_TYPE $WORK_MODE $IN_REC $IN_FLAT $SYS
 fi
