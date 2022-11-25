@@ -39,7 +39,7 @@ const std::map<Int_t, std::map<Int_t, const Char_t *>> CentralityBin ={ {9,{{0,"
   ///  0 = 75-80%
 
 
-const int Nharm = 1;
+const int Nharm = 2;
 const std::map<Int_t,Int_t> vec_harmonic = {{0,2},{1,3},{2,4},{3,2},{4,2}}; 
 
 const int nBinCent = 9;
