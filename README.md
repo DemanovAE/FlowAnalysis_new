@@ -90,7 +90,7 @@ make
 ./FemtoDstAnalyzer_PID -i ../lists/lists27GeV/StRun15.list -o ./flow_27GeV.root -r raw_27GeV.root -f rec_27GeV.root -m raw -g 27
 ```
 
-Для отправки задач на класстер используются следующий bash скрипт - `/scripts/cl_mephi/start_pid_nica.sh INPUT_FILELIST_DIR INPUT_WORKMODE INPUT_ENERGY`
+Для отправки задач на класстер используются следующий bash скрипт (!! надо настроить пути в свою директорию) - `/scripts/cl_mephi/start_pid_nica.sh INPUT_FILELIST_DIR INPUT_WORKMODE INPUT_ENERGY`
 ```sh
 cd ../scripts/cl_mephi
 . start_pid_nica.sh /scratch2/$USER/STAR/BES/lists/lists27GeV raw 27
